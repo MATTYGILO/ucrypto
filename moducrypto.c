@@ -156,6 +156,7 @@ STATIC mp_obj_t mp_obj_new_int_from_fp(const fp_int *fp, uint8_t base)
 }
 
 /* returns a TFM ident string useful for debugging... */
+
 STATIC mp_obj_t mod_ident(void)
 {
     const char *s = fp_ident();
@@ -163,8 +164,19 @@ STATIC mp_obj_t mod_ident(void)
     vstr_t vstr_out;
     vstr_init(&vstr_out, s_len);
     vstr_add_strn(&vstr_out, s, s_len);
-    return mp_obj_new_str_from_vstr(&vstr_out);
+    return mp_obj_new_str_from_vstr(&mp_type_str, &vstr_out);
 }
+
+STATIC mp_obj_t mod_init(void)
+{
+    const char *s = fp_ident();
+    size_t s_len = strlen(s);
+    vstr_t vstr_out;
+    vstr_init(&vstr_out, s_len);
+    vstr_add_strn(&vstr_out, s, s_len);
+    return mp_obj_new_str_from_vstr(&mp_type_str, &vstr_out);
+}
+
 
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(mod_ident_obj, mod_ident);
 STATIC MP_DEFINE_CONST_STATICMETHOD_OBJ(mod_static_ident_obj, MP_ROM_PTR(&mod_ident_obj));
